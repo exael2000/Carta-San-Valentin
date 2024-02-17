@@ -8,6 +8,42 @@ body {
     margin: 0;
 }
 
+.background-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.background-element {
+    flex: 1 0 33.33%;
+    min-height: 150px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    margin: 5px;
+}
+
+.element-1 {
+    background-image: url('imagen1.jfif');
+}
+
+.element-2 {
+    background-image: url('imagen2.jfif');
+}
+
+.element-3 {
+    background-image: url('imagen3.jfif');
+}
+
+.element-4 {
+    background-image: url('imagen4.jfif');
+}
+
 .carta {
     position: relative;
     width: 300px;
@@ -17,6 +53,7 @@ body {
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
+    padding: 20px;
 }
 
 .sobre {
@@ -62,7 +99,7 @@ body {
     transition: all 0.3s ease;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(255, 94, 120, 0.8); /* Agrega un efecto de sombra tipo neón */
+    box-shadow: 0 0 10px rgba(255, 94, 120, 0.8);
     padding: 10px;
 }
 
@@ -87,3 +124,104 @@ button.cerrar-btn {
 button.cerrar-btn:hover {
     background-color: #a0173f;
 }
+
+.frases-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #cc1c4a;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.frases-btn:hover {
+    background-color: #a0173f;
+}
+
+.frases-panel {
+    display: none;
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 15px;
+    z-index: 3;
+}
+
+.cerrar-frases-btn {
+    background-color: #cc1c4a;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.cerrar-frases-btn:hover {
+    background-color: #a0173f;
+}
+
+.frases-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #cc1c4a;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .frases-btn:hover {
+            background-color: #a0173f;
+        }
+
+        .frases-popup {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            right: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 15px;
+            z-index: 3;
+        }
+
+        .frases-guardadas {
+            text-align: center;
+        }
+
+        .cerrar-frases-btn {
+            background-color: #cc1c4a;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .cerrar-frases-btn:hover {
+            background-color: #a0173f;
+        }
+
+        #frasesCargadas {
+            max-height: 250px;  /* Cambia el valor según tus preferencias */
+            max-width: 250px;
+            overflow-y: auto;
+        }
