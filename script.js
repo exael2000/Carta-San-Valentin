@@ -9,11 +9,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const cerrarFrasesBtn = document.querySelector('.cerrar-frases-btn');
     const frasesCargadasDiv = document.getElementById('frasesCargadas');
 
+    // Lista para almacenar las frases
+    const frasesList = [];
+
     botonCerrar.innerText = 'Cerrar';
     botonCerrar.addEventListener('click', cerrarCarta);
 
     frasesBtn.addEventListener('click', abrirPanelFrases);
     cerrarFrasesBtn.addEventListener('click', cerrarPanelFrases);
+
+    sobre.addEventListener("click", abrirCarta);
+
+    document.addEventListener("mousemove", function (event) {
+        const { clientX, clientY } = event;
+        const rect = corazon.getBoundingClientRect();
+
+        const distanciaX = clientX - (rect.left + rect.width / 2);
+        const distanciaY = clientY - (rect.top + rect.height / 2);
+        const distanciaDesdeElCentro = Math.sqrt(distanciaX ** 2 + distanciaY ** 2);
+
+        const nuevoTamano = 55 - distanciaDesdeElCentro / 10;
+        const nuevaTonalidad = `rgb(${255 - distanciaDesdeElCentro}, 94, 120)`;
+
+        const tamanoMinimo = 20;
+        corazon.style.fontSize = `${Math.max(nuevoTamano, tamanoMinimo)}px`;
+        corazon.style.color = nuevaTonalidad;
+    });
 
     function abrirCarta() {
         contenidoCarta.style.opacity = '0';
@@ -57,55 +78,17 @@ document.addEventListener("DOMContentLoaded", function () {
         contenidoCarta.removeChild(botonCerrar);
     }
 
-    sobre.addEventListener("click", abrirCarta);
-
-    document.addEventListener("mousemove", function (event) {
-        const { clientX, clientY } = event;
-        const rect = corazon.getBoundingClientRect();
-
-        const distanciaX = clientX - (rect.left + rect.width / 2);
-        const distanciaY = clientY - (rect.top + rect.height / 2);
-        const distanciaDesdeElCentro = Math.sqrt(distanciaX ** 2 + distanciaY ** 2);
-
-        const nuevoTamano = 55 - distanciaDesdeElCentro / 10;
-        const nuevaTonalidad = `rgb(${255 - distanciaDesdeElCentro}, 94, 120)`;
-
-        const tamanoMinimo = 20;
-        corazon.style.fontSize = `${Math.max(nuevoTamano, tamanoMinimo)}px`;
-        corazon.style.color = nuevaTonalidad;
-    });
-
     function abrirPanelFrases() {
         frasesPanel.style.display = 'block';
-
-        // Limpia el espacio de frases cada vez que se abre el panel
         frasesCargadasDiv.innerHTML = '';
 
-        // TODO: Lógica para cargar frases desde el archivo y agregarlas al frasesCargadasDiv
-        // Ejemplo: Utiliza fetch para cargar las frases desde un archivo o una API
         fetch('frases.txt')
             .then(response => response.text())
             .then(data => {
-                // Procesa las frases y agrégales el formato deseado
                 const frasesArray = data.split('\n');
-                frasesArray.forEach(frase => {
-                    // Crea un contenedor independiente para cada frase
-                    const fraseContainer = document.createElement('div');
-
-                    // Crea un elemento para mostrar la parte de la frase
-                    const fraseDiv = document.createElement('div');
-                    fraseDiv.innerText = obtenerParteFrase(frase);
-
-                    // Crea un evento clic para alternar entre mostrar la frase y solo el autor con el título
-                    fraseContainer.addEventListener('click', function () {
-                        alternarFraseAutorTitulo(frase, fraseContainer);
-                    });
-
-                    // Agrega la parte de la frase al contenedor
-                    fraseContainer.appendChild(fraseDiv);
-
-                    // Agrega el contenedor al espacio de frases
-                    frasesCargadasDiv.appendChild(fraseContainer);
+                frasesArray.forEach((frase, index) => {
+                    frasesList.push(frase);
+                    agregarFraseAlDOM(frase, index);
                 });
             })
             .catch(error => console.error('Error cargando frases:', error));
@@ -115,26 +98,49 @@ document.addEventListener("DOMContentLoaded", function () {
         frasesPanel.style.display = 'none';
     }
 
+    function agregarFraseAlDOM(frase, index) {
+        const fraseContainer = document.createElement('div');
+        fraseContainer.dataset.index = index;
+
+        const fraseDiv = document.createElement('div');
+        fraseDiv.innerText = obtenerParteFrase(frase);
+
+        fraseContainer.appendChild(fraseDiv);
+        frasesCargadasDiv.appendChild(fraseContainer);
+
+        fraseContainer.addEventListener('click', function () {
+            console.log(`Evento clic en frase: "${frase}"`);
+            alternarFraseAutorTitulo(fraseContainer);
+        });
+    }
+
     function obtenerParteFrase(fraseCompleta) {
-        // Divide la frase completa en partes (frase, autor, libro)
         const partes = fraseCompleta.split('-');
-        // Devuelve solo la parte de la frase
         return partes[0];
     }
 
-    function alternarFraseAutorTitulo(fraseCompleta, contenedor) {
-        // Divide la frase completa en partes (frase, autor, libro)
-        const partes = fraseCompleta.split('-');
+    function alternarFraseAutorTitulo(contenedor) {
+        const index = contenedor.dataset.index;
 
-        // Verifica que haya al menos dos partes (frase y autor+libro)
-        if (partes.length >= 2) {
-            // Muestra la frase o solo el autor con el título en lugar de la frase actual en el contenedor específico
-            contenedor.innerHTML = (contenedor.innerHTML === obtenerParteFrase(fraseCompleta)) ?
-                `<strong>Autor:</strong> ${partes[1]}<br><strong>Libro:</strong> ${partes.slice(2).join('-')}` :
-                obtenerParteFrase(fraseCompleta);
+        if (index !== undefined && frasesList[index]) {
+            const fraseCompleta = frasesList[index];
+            const partes = fraseCompleta.split('-');
+
+            if (partes.length >= 3) {
+                if (contenedor.classList.contains('mostrarAutorTitulo')) {
+                    // Cambiar a solo frase
+                    const fraseDiv = contenedor.querySelector('div');
+                    fraseDiv.innerText = obtenerParteFrase(fraseCompleta);
+                    contenedor.classList.remove('mostrarAutorTitulo');
+                } else {
+                    // Cambiar a autor y título
+                    const nuevoContenido = document.createElement('div');
+                    nuevoContenido.innerHTML = `${partes[1]} - ${partes[2]}`;
+                    contenedor.innerHTML = ''; // Limpiar el contenido actual
+                    contenedor.appendChild(nuevoContenido);
+                    contenedor.classList.add('mostrarAutorTitulo');
+                }
+            }
         }
     }
-
-    // Resto del código...
-
 });

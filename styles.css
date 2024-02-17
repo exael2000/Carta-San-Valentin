@@ -129,18 +129,18 @@ button.cerrar-btn:hover {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #cc1c4a;
+    background: linear-gradient(to left, #d12f5b, #e47085); /* Degradado de derecha a izquierda */
     color: #fff;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s ease; /* Cambiado a background para incluir el degradado */
 }
 
 .frases-btn:hover {
-    background-color: #a0173f;
+    background: linear-gradient(to right, #d12f5b, #e47085); /* Ajuste de la dirección del degradado en hover */
 }
 
 .frases-panel {
@@ -148,11 +148,15 @@ button.cerrar-btn:hover {
     position: fixed;
     bottom: 60px;
     right: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+    background: linear-gradient(to left, #f891b5, #fdc3d0); /* Degradado de derecha a izquierda */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Haciendo las sombras más oscuras */
+    border-radius: 10px;
     padding: 15px;
     z-index: 3;
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 0;
+    transition: background 0.6s ease, box-shadow 0.3s ease;
 }
 
 .cerrar-frases-btn {
@@ -164,64 +168,36 @@ button.cerrar-btn:hover {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
 .cerrar-frases-btn:hover {
     background-color: #a0173f;
 }
 
-.frases-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #cc1c4a;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
+#frasesCargadas {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-height: 250px;  /* Cambia el valor según tus preferencias */
+    max-width: 250px;
+    overflow-y: auto;
+}
 
-        .frases-btn:hover {
-            background-color: #a0173f;
-        }
+#frasesCargadas div {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-        .frases-popup {
-            display: none;
-            position: fixed;
-            bottom: 60px;
-            right: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            padding: 15px;
-            z-index: 3;
-        }
+#frasesCargadas div:last-child {
+    margin-bottom: 0;
+}
 
-        .frases-guardadas {
-            text-align: center;
-        }
-
-        .cerrar-frases-btn {
-            background-color: #cc1c4a;
-            color: #fff;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .cerrar-frases-btn:hover {
-            background-color: #a0173f;
-        }
-
-        #frasesCargadas {
-            max-height: 250px;  /* Cambia el valor según tus preferencias */
-            max-width: 250px;
-            overflow-y: auto;
-        }
+#frasesCargadas div:hover {
+    background-color: #f5a4bd;
+    transform: scale(1.03);
+}
